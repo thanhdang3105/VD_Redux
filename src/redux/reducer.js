@@ -5,9 +5,15 @@ const initialState = {
         prioriry: []
     },
     todoList:[
-        ...JSON.parse(localStorage.todoList)
+        
     ],
 }
+
+if(localStorage.todoList) {
+    initialState.todoList = JSON.parse(localStorage.todoList)
+}
+
+
 
 const rootReducer = (state = initialState, action) => {
     /*\

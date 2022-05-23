@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux'
 import { filterAction } from '../../redux/actions'
 
 export default React.memo(function Filter() {
-    console.log('render filter')
     const [searchInputValue,setSearchInputValue] = React.useState('')
     const [radioStatus,setRadioStatus] = React.useState('All')
     const [selectPrioriry,setSelectPriority] = React.useState([])
