@@ -2,6 +2,7 @@
   "name": "readux-core",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://thanhdang3105.github.io/VD_Redux/",
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^13.2.0",
