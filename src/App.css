@@ -38,13 +38,16 @@
 .todoControl{
   display: none;
 }
+.todoControl.show{
+  display: block;
+}
 
 .toDoItem:hover .todoControl{
   display: block;
 }
 
 .iconEditTodo, .iconDeleteTodo{
-  color: black;
+  color: black !important;
   cursor: pointer;
   font-size: 16px;
 }

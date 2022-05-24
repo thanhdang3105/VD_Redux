@@ -1,5 +1,5 @@
-import { Button, Checkbox, Row, Tag } from 'antd';
-import { CloseCircleOutlined, EditOutlined } from '@ant-design/icons'
+import { Checkbox, Row, Tag } from 'antd';
+import { CloseCircleOutlined, EditOutlined, CloseOutlined } from '@ant-design/icons'
 import React from 'react'
 import { useDispatch } from 'react-redux';
 import { todoAction } from '../../redux/actions'
@@ -10,7 +10,7 @@ const priorityColorMapping = {
     Low: 'gray',
   };
 
-export default React.memo(function Todo({ id, name, prioriry, completed }) {
+export default React.memo(function Todo({ id, name, prioriry, completed, edit }) {
 
   const [checked, setChecked] = React.useState(completed)
 
@@ -24,6 +24,9 @@ export default React.memo(function Todo({ id, name, prioriry, completed }) {
   const handleEditTodo =() => {
     dispatch(todoAction('editTodo', id))
   }
+  const handleCloseEditTodo =() => {
+    dispatch(todoAction('editTodo', ''))
+  }
 
   const handleDeleteTodo =() => {
     dispatch(todoAction('deleteTodo', id)) 
@@ -35,8 +38,8 @@ return (
       <Checkbox checked={checked} onChange={handleCheckTodo} style={{flex: 1}}>
           {name}
       </Checkbox>
-      <Tag className='todoControl' color='transparent'>
-        <EditOutlined className='iconEditTodo' onClick={handleEditTodo} />
+      <Tag className={`todoControl ${edit && 'show'}`}color='transparent'>
+        {edit ? <CloseOutlined className='iconEditTodo' onClick={handleCloseEditTodo} /> : <EditOutlined className='iconEditTodo' onClick={handleEditTodo} />}
         <CloseCircleOutlined className='iconDeleteTodo' onClick={handleDeleteTodo} />
       </Tag>
       <Tag style={{width: '60.16px', textAlign: 'center'}} color={priorityColorMapping[prioriry]}>{prioriry}</Tag>

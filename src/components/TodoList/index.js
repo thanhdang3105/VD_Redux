@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { todoAction } from '../../redux/actions'
 import Todo from '../Todo'
 import { v4 as uuidV4 } from 'uuid'
-import { todoListSelector } from '../../redux/selectors'
+import { todoListSelector, todoEditSelector } from '../../redux/selectors'
 
 export default function TodoList() {
     
@@ -12,6 +12,18 @@ export default function TodoList() {
     const [prioriry, setPriority] = React.useState('Medium')
 
     const todoList = useSelector(todoListSelector)
+    const todoEdit = useSelector(todoEditSelector)
+
+    React.useEffect(() => {
+        if(Object.entries(todoEdit).length){
+            setTodoName(todoEdit.name)
+            setPriority(todoEdit.prioriry)
+        }
+        else{
+            setTodoName('')
+            setPriority('Medium')    
+        }
+    }, [todoEdit])
 
     const dispatch = useDispatch()
 
@@ -36,12 +48,27 @@ export default function TodoList() {
             setPriority('Medium')
         }
     }
+
+    const handleUpdateTodo = () => {
+        if(todoName){
+            const payload = {
+                id: todoEdit.id,
+                name: todoName,
+                prioriry: prioriry,
+                completed: todoEdit.completed
+            }
+            dispatch(todoAction('updateTodo',payload))
+            setTodoName('')
+            setPriority('Medium')
+        }
+    }
     
   return (
     <Row style={{ flex: '1', overflow: 'hidden' }}>
         <Col span={24} className="todoList">
             {todoList.map(todo => {
-                    return <Todo key={todo.id} id={todo.id} name={todo.name} prioriry={todo.prioriry} completed={todo.completed} />
+                    return <Todo key={todo.id} id={todo.id} name={todo.name} prioriry={todo.prioriry} completed={todo.completed} 
+                    edit={Object.entries(todoEdit).length && todoEdit.id === todo.id ? true : false} />
             })}
         </Col>
         <Col span={24}>
@@ -58,7 +85,9 @@ export default function TodoList() {
                         <Tag color='gray'>Low</Tag>
                     </Select.Option>
                 </Select>
-                <Button type='primary' onClick={handleAddTodo}>Add</Button>
+                {Object.entries(todoEdit).length ? (<Button type='primary' onClick={handleUpdateTodo}>Update</Button>)
+                : (<Button type='primary' onClick={handleAddTodo}>Add</Button>)}
+                
             </Input.Group>
         </Col>
     </Row>

@@ -7,6 +7,9 @@ const initialState = {
     todoList:[
         
     ],
+    todoEdit:{
+
+    }
 }
 
 if(localStorage.todoList) {
@@ -34,11 +37,23 @@ const rootReducer = (state = initialState, action) => {
             }
             localStorage.todoList = JSON.stringify(data.todoList)
             return data
+        case 'todoList/updateTodo':
+            const todoListUpdated = state.todoList.map((todo) => {
+                return todo.id === action.payload.id ? action.payload : todo 
+            })
+            data = {
+                ...state,
+                todoList: [
+                    ...todoListUpdated
+                ],
+                todoEdit:{}
+            }
+            localStorage.todoList = JSON.stringify(data.todoList)
+            return data
         case 'todoList/deleteTodo':
             const newTodo = state.todoList.filter((todo) => {
                 return todo.id !== action.payload
             })
-            console.log(newTodo)
             data = {
                 ...state,
                 todoList: [
@@ -46,6 +61,18 @@ const rootReducer = (state = initialState, action) => {
                 ]
             }
             localStorage.todoList = JSON.stringify(data.todoList)
+            return data
+        case 'todoList/editTodo':
+            const todoEdit = state.todoList.find((todo) => {
+                return todo.id === action.payload 
+            })
+            data = {
+                ...state,
+                todoEdit: {
+                    ...todoEdit
+                }
+            }
+            // localStorage.todoList = JSON.stringify(data.todoList)
             return data
         case 'todoList/toggleCompleted':
             const newTodoList = state.todoList.map((todo) => {

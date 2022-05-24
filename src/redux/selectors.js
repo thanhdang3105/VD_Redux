@@ -13,3 +13,4 @@ export const todoListSelector = (state) => {
     return todoFiltered
 }
 export const filtersSelector = (state) => state.filters
+export const todoEditSelector = (state) => state.todoEdit
