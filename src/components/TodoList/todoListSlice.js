@@ -13,14 +13,13 @@ export default createSlice({
             localStorage.todoList = JSON.stringify(state.todoList)
         },// Tự khởi tạo action {type: 'name ta vừa khai báo bên trên'/ trên key reducer (vd: filterText)}
         updateTodo: (state, action) => {
-            const todoListUpdated = state.todoList.filter((todo) => {
+            const todoListUpdated = state.todoList.findIndex((todo) => {
                 return todo.id === action.payload.id
             })
-            console.log(todoListUpdated);
-            // state.todoList = 
-            // console.log(state.todoList);
+            state.todoList[todoListUpdated] = action.payload
+            state.todoEdit = {}
 
-            // localStorage.todoList = JSON.stringify(state.todoList)
+            localStorage.todoList = JSON.stringify(state.todoList)
         },
         deleteTodo: (state, action) => {
             const newTodo = state.todoList.filter((todo) => {
