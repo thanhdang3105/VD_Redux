@@ -74,7 +74,7 @@ export default function TodoList() {
         </Col>
         <Col span={24}>
             <Input.Group compact style={{ display: 'flex'}}>
-                <Input value={todoName} onChange={handleInputChange} onPressEnter={handleAddTodo}/>
+                <Input value={todoName} onChange={handleInputChange} onPressEnter={todoEdit && Object.entries(todoEdit).length ? handleUpdateTodo : handleAddTodo}/>
                 <Select defaultValue='Medium' value={priority} onChange={handleSelectChange}>
                     <Select.Option value='High' label='High'>
                         <Tag color='red'>High</Tag>
