@@ -1,16 +1,27 @@
-export const todoListSelector = (state) => {
-    const filters = filtersSelector(state)
-    const todoFiltered = state.todoList.filter(todo => {
-        const filterText = todo.name.toLowerCase().includes(state.filters.search.toLowerCase())
-        const filterPrioriry = filters.prioriry.includes(todo.prioriry)
-        if(filters.status === 'All'){
-            return filters.prioriry.length ? filterText && filterPrioriry : filterText
-        }
-        return filters.prioriry.length ? 
-        (filterText && filterPrioriry && (filters.status ==='Completed' ? todo.completed : !todo.completed)) 
-        : (filterText && (filters.status ==='Completed' ? todo.completed : !todo.completed))
-    })
-    return todoFiltered
-}
+import { createSelector } from '@reduxjs/toolkit'
+
+export const todoListSelector = (state) => state.todoList.todoList
 export const filtersSelector = (state) => state.filters
-export const todoEditSelector = (state) => state.todoEdit
+export const todoEditSelector = (state) => {
+    console.log(state.todoList.todoEdit);
+    return state.todoList.todoEdit
+}
+
+export const todoRemainingSelector = createSelector(
+    todoListSelector,
+    filtersSelector,
+    (todoList, filters) => {
+        console.log(todoList);
+        const todoFiltered = todoList.filter(todo => {
+            const filterText = todo.name.toLowerCase().includes(filters.search.toLowerCase())
+            const filterPriorities = filters.priorities.includes(todo.priority)
+            if(filters.status === 'All'){
+                return filters.priorities.length ? filterText && filterPriorities : filterText
+            }
+            return filters.priorities.length ? 
+            (filterText && filterPriorities && (filters.status ==='Completed' ? todo.completed : !todo.completed)) 
+            : (filterText && (filters.status ==='Completed' ? todo.completed : !todo.completed))
+        })
+        return todoFiltered
+    }
+)

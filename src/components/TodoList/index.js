@@ -1,27 +1,28 @@
 import { Button, Col, Input, Row, Select, Tag } from 'antd'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { todoAction } from '../../redux/actions'
+// import { todoAction } from '../../redux/actions'
+import todoListSlice from './todoListSlice'
 import Todo from '../Todo'
 import { v4 as uuidV4 } from 'uuid'
-import { todoListSelector, todoEditSelector } from '../../redux/selectors'
+import { todoRemainingSelector, todoEditSelector } from '../../redux/selectors'
 
 export default function TodoList() {
     
     const [todoName, setTodoName] = React.useState('')
-    const [prioriry, setPriority] = React.useState('Medium')
+    const [priority, setPriorities] = React.useState('Medium')
 
-    const todoList = useSelector(todoListSelector)
+    const todoList = useSelector(todoRemainingSelector)
     const todoEdit = useSelector(todoEditSelector)
 
     React.useEffect(() => {
-        if(Object.entries(todoEdit).length){
+        if(todoEdit && Object.entries(todoEdit).length){
             setTodoName(todoEdit.name)
-            setPriority(todoEdit.prioriry)
+            setPriorities(todoEdit.priority)
         }
         else{
             setTodoName('')
-            setPriority('Medium')    
+            setPriorities('Medium')    
         }
     }, [todoEdit])
 
@@ -32,7 +33,7 @@ export default function TodoList() {
     }
 
     const handleSelectChange = (value) => {
-        setPriority(value)
+        setPriorities(value)
     }
 
     const handleAddTodo = () => {
@@ -40,12 +41,12 @@ export default function TodoList() {
             const payload = {
                 id: uuidV4(),
                 name: todoName,
-                prioriry: prioriry,
+                priority: priority,
                 completed: false
             }
-            dispatch(todoAction('addTodo',payload))
+            dispatch(todoListSlice.actions.addTodo(payload))
             setTodoName('')
-            setPriority('Medium')
+            setPriorities('Medium')
         }
     }
 
@@ -54,27 +55,27 @@ export default function TodoList() {
             const payload = {
                 id: todoEdit.id,
                 name: todoName,
-                prioriry: prioriry,
+                priority: priority,
                 completed: todoEdit.completed
             }
-            dispatch(todoAction('updateTodo',payload))
+            dispatch(todoListSlice.actions.updateTodo(payload))
             setTodoName('')
-            setPriority('Medium')
+            setPriorities('Medium')
         }
     }
     
   return (
     <Row style={{ flex: '1', overflow: 'hidden' }}>
         <Col span={24} className="todoList">
-            {todoList.map(todo => {
-                    return <Todo key={todo.id} id={todo.id} name={todo.name} prioriry={todo.prioriry} completed={todo.completed} 
-                    edit={Object.entries(todoEdit).length && todoEdit.id === todo.id ? true : false} />
+            {todoList && todoList.map(todo => {
+                    return <Todo key={todo.id} id={todo.id} name={todo.name} priority={todo.priority} completed={todo.completed} 
+                    edit={todoEdit && Object.entries(todoEdit).length && todoEdit.id === todo.id ? true : false} />
             })}
         </Col>
         <Col span={24}>
             <Input.Group compact style={{ display: 'flex'}}>
                 <Input value={todoName} onChange={handleInputChange} onPressEnter={handleAddTodo}/>
-                <Select defaultValue='Medium' value={prioriry} onChange={handleSelectChange}>
+                <Select defaultValue='Medium' value={priority} onChange={handleSelectChange}>
                     <Select.Option value='High' label='High'>
                         <Tag color='red'>High</Tag>
                     </Select.Option>
@@ -85,7 +86,7 @@ export default function TodoList() {
                         <Tag color='gray'>Low</Tag>
                     </Select.Option>
                 </Select>
-                {Object.entries(todoEdit).length ? (<Button type='primary' onClick={handleUpdateTodo}>Update</Button>)
+                {todoEdit && Object.entries(todoEdit).length ? (<Button type='primary' onClick={handleUpdateTodo}>Update</Button>)
                 : (<Button type='primary' onClick={handleAddTodo}>Add</Button>)}
                 
             </Input.Group>

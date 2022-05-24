@@ -1,7 +1,8 @@
 import { Col, Input, Radio, Row, Select, Tag, Typography } from 'antd'
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { filterAction } from '../../redux/actions'
+// import { filterAction } from '../../redux/actions'
+import filtersSlice from './filtersSlice'
 
 export default React.memo(function Filter() {
     const [searchInputValue,setSearchInputValue] = React.useState('')
@@ -12,22 +13,22 @@ export default React.memo(function Filter() {
 
     const handleSearchInputChange = (e) => {
         setSearchInputValue(e.target.value)
-        dispatch(filterAction('filterText',e.target.value))
+        dispatch(filtersSlice.actions.filterText(e.target.value))
     }
 
     const handleRadioStatusChange = (e) => {
         setRadioStatus(e.target.value)
-        dispatch(filterAction('filterStatus',e.target.value))
+        dispatch(filtersSlice.actions.filterStatus(e.target.value))
     }
 
     const handleSelectPrioriryChange = (value) => {
         setSelectPriority(value)
-        dispatch(filterAction('filterPrioriry',value))
+        dispatch(filtersSlice.actions.filterPrioriry(value))
     }
 
     const handleClearAllSelect = () => {
         setSelectPriority('')
-        dispatch(filterAction('filterPrioriry',''))
+        dispatch(filtersSlice.actions.filterPrioriry(''))
     }
 
   return (
