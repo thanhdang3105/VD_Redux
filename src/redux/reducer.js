@@ -34,6 +34,19 @@ const rootReducer = (state = initialState, action) => {
             }
             localStorage.todoList = JSON.stringify(data.todoList)
             return data
+        case 'todoList/deleteTodo':
+            const newTodo = state.todoList.filter((todo) => {
+                return todo.id !== action.payload
+            })
+            console.log(newTodo)
+            data = {
+                ...state,
+                todoList: [
+                    ...newTodo
+                ]
+            }
+            localStorage.todoList = JSON.stringify(data.todoList)
+            return data
         case 'todoList/toggleCompleted':
             const newTodoList = state.todoList.map((todo) => {
                 return todo.id === action.payload ? { ...todo, completed: !todo.completed } : todo 

@@ -19,3 +19,33 @@
   width: 100%;
   text-align: center;
 }
+
+.todoList{
+  height: calc(100% - 45px);
+  overflow-y: auto;
+}
+
+.todoList::-webkit-scrollbar{
+  width: 5px;
+  border-radius: 25px;
+}
+
+.todoList::-webkit-scrollbar-thumb{
+  background-color: rgb(220, 220, 220);
+  border-radius: 25px;
+}
+
+.todoControl{
+  display: none;
+}
+
+.toDoItem:hover .todoControl{
+  display: block;
+}
+
+.iconEditTodo, .iconDeleteTodo{
+  color: black;
+  cursor: pointer;
+  font-size: 16px;
+}
+
