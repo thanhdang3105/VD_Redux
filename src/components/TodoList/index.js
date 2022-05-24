@@ -24,30 +24,29 @@ export default function TodoList() {
     }
 
     const handleAddTodo = () => {
-        const payload = {
-            id: uuidV4(),
-            name: todoName,
-            prioriry: prioriry,
-            completed: false
+        if(todoName){
+            const payload = {
+                id: uuidV4(),
+                name: todoName,
+                prioriry: prioriry,
+                completed: false
+            }
+            dispatch(todoAction('addTodo',payload))
+            setTodoName('')
+            setPriority('Medium')
         }
-        dispatch(todoAction('addTodo',payload))
-        setTodoName('')
-        setPriority('Medium')
     }
     
   return (
-    <Row style={{ height: 'calc(100% - 40px)' }}>
-        <Col span={24} style={{ height: 'calc(100% - 40px)', overflowY: 'auto' }}>
-            {/* <Todo name='Learn React' prioriry='High' />
-            <Todo name='Learn Redux' prioriry='Medium' />
-            <Todo name='Learn JavaScript' prioriry='Low' /> */}
+    <Row style={{ flex: '1', overflow: 'hidden' }}>
+        <Col span={24} style={{ height: 'calc(100% - 45px)', overflowY: 'auto' }}>
             {todoList.map(todo => {
                     return <Todo key={todo.id} id={todo.id} name={todo.name} prioriry={todo.prioriry} completed={todo.completed} />
             })}
         </Col>
         <Col span={24}>
             <Input.Group compact style={{ display: 'flex'}}>
-                <Input value={todoName} onChange={handleInputChange}/>
+                <Input value={todoName} onChange={handleInputChange} onPressEnter={handleAddTodo}/>
                 <Select defaultValue='Medium' value={prioriry} onChange={handleSelectChange}>
                     <Select.Option value='High' label='High'>
                         <Tag color='red'>High</Tag>
