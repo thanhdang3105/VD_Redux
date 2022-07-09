@@ -3,7 +3,6 @@ import { createSelector } from '@reduxjs/toolkit'
 export const todoListSelector = (state) => state.todoList.todoList
 export const filtersSelector = (state) => state.filters
 export const todoEditSelector = (state) => {
-    console.log(state.todoList.todoEdit);
     return state.todoList.todoEdit
 }
 
